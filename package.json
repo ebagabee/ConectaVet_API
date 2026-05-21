@@ -9,6 +9,8 @@
     "start": "node dist/server.js",
     "migrate": "knex --knexfile knexfile.ts migrate:latest",
     "migrate:rollback": "knex --knexfile knexfile.ts migrate:rollback",
+    "seed": "knex --knexfile knexfile.ts seed:run",
+    "seed:make": "knex --knexfile knexfile.ts seed:make",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
