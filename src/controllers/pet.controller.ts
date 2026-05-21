@@ -4,7 +4,41 @@ import { petService } from '../services/pet.service';
 export const petController = {
   async create(req: Request, res: Response) {
     try {
-      const pet = await petService.create(req.body);
+      // Campos chegam via multipart/form-data (req.body = texto, req.file = imagem)
+      const {
+        tutor_id,
+        name,
+        species,
+        breed,
+        size,
+        coat,
+        birth_date,
+        microchipped,
+        neutered,
+        behavior,
+        conditions,
+      } = req.body as Record<string, string>;
+
+      // Monta URL pública do avatar, se enviado
+      const avatar_url = req.file
+        ? `/uploads/pets/${req.file.filename}`
+        : undefined;
+
+      const pet = await petService.create({
+        tutor_id,
+        name,
+        species,
+        breed,
+        size,
+        coat,
+        birth_date,
+        microchipped: microchipped === 'true',
+        neutered: neutered === 'true',
+        behavior: behavior || undefined,
+        conditions: conditions || undefined,
+        avatar_url,
+      });
+
       res.status(201).json(pet);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Erro ao criar pet.';

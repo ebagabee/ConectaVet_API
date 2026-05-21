@@ -12,6 +12,7 @@ export interface CreatePetDTO {
   neutered: boolean;
   behavior?: string;
   conditions?: string;
+  avatar_url?: string;
 }
 
 export const petService = {
