@@ -3,9 +3,19 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET ?? 'dev_secret';
 
-// Estende o Request do Express para incluir tutorId após verificação
+export type UserType = 'tutor' | 'admin';
+
 export interface AuthRequest extends Request {
+  userId?: string;
+  userType?: UserType;
+  /** @deprecated use userId */
   tutorId?: string;
+}
+
+interface JwtPayload {
+  id: string;
+  email: string;
+  type: UserType;
 }
 
 export function requireAuth(req: AuthRequest, res: Response, next: NextFunction) {
@@ -18,10 +28,21 @@ export function requireAuth(req: AuthRequest, res: Response, next: NextFunction)
   const token = authHeader.slice(7);
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as { id: string; email: string };
+    const payload = jwt.verify(token, JWT_SECRET) as JwtPayload;
+    req.userId = payload.id;
+    req.userType = payload.type;
     req.tutorId = payload.id;
     next();
   } catch {
     return res.status(401).json({ error: 'Token inválido ou expirado.' });
   }
+}
+
+export function requireAdmin(req: AuthRequest, res: Response, next: NextFunction) {
+  requireAuth(req, res, () => {
+    if (req.userType !== 'admin') {
+      return res.status(403).json({ error: 'Acesso restrito a administradores.' });
+    }
+    next();
+  });
 }
