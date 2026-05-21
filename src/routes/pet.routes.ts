@@ -6,11 +6,11 @@ import { requireAuth } from '../middlewares/auth.middleware';
 const router = Router();
 
 router.post('/', uploadPetAvatar, petController.create);
-
-// Rota autenticada: retorna os pets do tutor logado via JWT
 router.get('/my', requireAuth, petController.findMine);
-
-router.get('/tutor/:tutorId', petController.findByTutor);
+router.get('/me', requireAuth, petController.findMine);
+router.get('/user/:userId', petController.findByUser);
+router.get('/tutor/:tutorId', petController.findByUser);
 router.get('/:id', petController.findById);
+router.put('/:id', requireAuth, uploadPetAvatar, petController.update);
 
 export default router;
