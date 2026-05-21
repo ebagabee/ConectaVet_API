@@ -1,10 +1,17 @@
 import type { Request, Response } from 'express';
 import { petService } from '../services/pet.service';
+import type { AuthRequest } from '../middlewares/auth.middleware';
 
 export const petController = {
   async create(req: Request, res: Response) {
     try {
       // Campos chegam via multipart/form-data (req.body = texto, req.file = imagem)
+      if (!req.body || typeof req.body !== 'object') {
+        return res.status(400).json({
+          error: 'Requisição inválida. Envie os dados como multipart/form-data.',
+        });
+      }
+
       const {
         tutor_id,
         name,
@@ -43,6 +50,19 @@ export const petController = {
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Erro ao criar pet.';
       res.status(400).json({ error: message });
+    }
+  },
+
+  // Retorna todos os pets do tutor autenticado (lê o ID do JWT)
+  async findMine(req: AuthRequest, res: Response) {
+    try {
+      if (!req.tutorId) {
+        return res.status(401).json({ error: 'Não autenticado.' });
+      }
+      const pets = await petService.findByTutor(req.tutorId);
+      res.json(pets);
+    } catch {
+      res.status(500).json({ error: 'Erro ao buscar pets.' });
     }
   },
 
