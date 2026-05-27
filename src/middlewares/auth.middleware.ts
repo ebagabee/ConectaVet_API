@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET ?? 'dev_secret';
 
-export type UserType = 'tutor' | 'admin';
+export type UserType = 'tutor' | 'admin' | 'veterinario';
 
 export interface AuthRequest extends Request {
   userId?: string;
@@ -42,6 +42,15 @@ export function requireAdmin(req: AuthRequest, res: Response, next: NextFunction
   requireAuth(req, res, () => {
     if (req.userType !== 'admin') {
       return res.status(403).json({ error: 'Acesso restrito a administradores.' });
+    }
+    next();
+  });
+}
+
+export function requireVet(req: AuthRequest, res: Response, next: NextFunction) {
+  requireAuth(req, res, () => {
+    if (req.userType !== 'veterinario') {
+      return res.status(403).json({ error: 'Acesso restrito a veterinários.' });
     }
     next();
   });

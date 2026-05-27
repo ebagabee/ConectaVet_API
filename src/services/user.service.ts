@@ -5,10 +5,28 @@ import type { UserType } from '../middlewares/auth.middleware';
 export interface CreateUserDTO {
   name: string;
   cpf?: string | null;
+  cnpj?: string | null;
   email: string;
   address?: string | null;
   password: string;
   type?: UserType;
+  pix_type?: string | null;
+  pix_key?: string | null;
+  bank_code?: string | null;
+  bank_name?: string | null;
+  bank_agency?: string | null;
+  bank_account_number?: string | null;
+  bank_account_digit?: string | null;
+  bank_account_type?: string | null;
+  bank_holder_type?: string | null;
+  billing_cep?: string | null;
+  billing_street?: string | null;
+  billing_number?: string | null;
+  billing_complement?: string | null;
+  billing_neighborhood?: string | null;
+  billing_city?: string | null;
+  billing_state?: string | null;
+  recipient_id?: string | null;
 }
 
 export interface UpdateUserDTO {
@@ -23,7 +41,14 @@ export interface LoginDTO {
   password: string;
 }
 
-const PUBLIC_COLUMNS = ['id', 'name', 'cpf', 'email', 'address', 'type', 'created_at'];
+const PUBLIC_COLUMNS = [
+  'id', 'name', 'cpf', 'cnpj', 'email', 'address', 'type', 'created_at',
+  'recipient_id', 'pix_type', 'pix_key',
+  'bank_code', 'bank_name', 'bank_agency', 'bank_account_number',
+  'bank_account_digit', 'bank_account_type', 'bank_holder_type',
+  'billing_cep', 'billing_street', 'billing_number', 'billing_complement',
+  'billing_neighborhood', 'billing_city', 'billing_state',
+];
 
 export const userService = {
   async create(data: CreateUserDTO) {
@@ -31,11 +56,12 @@ export const userService = {
       .where({ email: data.email })
       .modify((qb) => {
         if (data.cpf) qb.orWhere({ cpf: data.cpf });
+        if (data.cnpj) qb.orWhere({ cnpj: data.cnpj });
       })
       .first();
 
     if (conflict) {
-      throw new Error('E-mail ou CPF já cadastrado.');
+      throw new Error('E-mail, CPF ou CNPJ já cadastrado.');
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -44,10 +70,28 @@ export const userService = {
       .insert({
         name: data.name,
         cpf: data.cpf ?? null,
+        cnpj: data.cnpj ?? null,
         email: data.email,
         address: data.address ?? null,
         password: hashedPassword,
         type: data.type ?? 'tutor',
+        recipient_id: data.recipient_id ?? null,
+        pix_type: data.pix_type ?? null,
+        pix_key: data.pix_key ?? null,
+        bank_code: data.bank_code ?? null,
+        bank_name: data.bank_name ?? null,
+        bank_agency: data.bank_agency ?? null,
+        bank_account_number: data.bank_account_number ?? null,
+        bank_account_digit: data.bank_account_digit ?? null,
+        bank_account_type: data.bank_account_type ?? null,
+        bank_holder_type: data.bank_holder_type ?? null,
+        billing_cep: data.billing_cep ?? null,
+        billing_street: data.billing_street ?? null,
+        billing_number: data.billing_number ?? null,
+        billing_complement: data.billing_complement ?? null,
+        billing_neighborhood: data.billing_neighborhood ?? null,
+        billing_city: data.billing_city ?? null,
+        billing_state: data.billing_state ?? null,
       })
       .returning(PUBLIC_COLUMNS);
 

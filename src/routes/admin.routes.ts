@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { adminController } from '../controllers/admin.controller';
 import { planController } from '../controllers/plan.controller';
+import { vetController } from '../controllers/vet.controller';
 import { requireAdmin } from '../middlewares/auth.middleware';
 
 const router = Router();
@@ -19,5 +20,8 @@ router.get('/pets/:id', adminController.getPet);
 router.get('/plans', planController.listAdmin);
 router.post('/plans', planController.create);
 router.put('/plans/:id', planController.update);
+
+router.get('/veterinarios', vetController.listVets);
+router.post('/veterinarios', vetController.createVet);
 
 export default router;

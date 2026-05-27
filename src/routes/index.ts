@@ -7,6 +7,7 @@ import planRoutes from "./plan.routes";
 import subscriptionRoutes from "./subscription.routes";
 import adminRoutes from "./admin.routes";
 import webhookRoutes from "./webhook.routes";
+import vetRoutes from "./vet.routes";
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use("/plans", planRoutes);
 router.use("/subscriptions", subscriptionRoutes);
 router.use("/admin", adminRoutes);
 router.use("/webhooks", webhookRoutes);
+router.use("/vet", vetRoutes);
 
 export default router;
