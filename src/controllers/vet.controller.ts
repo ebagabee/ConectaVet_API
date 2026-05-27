@@ -29,9 +29,8 @@ export const vetController = {
           billing_street, billing_number, billing_complement,
           billing_neighborhood, billing_city, billing_state, billing_cep,
         });
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : 'Erro ao criar recebedor no Pagar.me';
-        return res.status(400).json({ error: msg });
+      } catch {
+        // Recipient será criado quando a conta Pagar.me tiver marketplace habilitado
       }
 
       const user = await userService.create({
