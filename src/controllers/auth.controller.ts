@@ -74,6 +74,7 @@ export const authController = {
           breed: petData.breed as string,
           size: petData.size as string,
           coat: petData.coat as string,
+          coat_color: (petData.coat_color as string | undefined) || undefined,
           birth_date: petData.birth_date as string,
           microchipped: petData.microchipped === true || petData.microchipped === 'true',
           neutered: petData.neutered === true || petData.neutered === 'true',

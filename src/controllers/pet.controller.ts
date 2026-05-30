@@ -19,6 +19,7 @@ export const petController = {
         breed,
         size,
         coat,
+        coat_color,
         birth_date,
         microchipped,
         neutered,
@@ -40,6 +41,7 @@ export const petController = {
         breed: breed as string,
         size: size as string,
         coat: coat as string,
+        coat_color: (coat_color as string | undefined) || undefined,
         birth_date: birth_date as string,
         microchipped: microchipped === 'true' || microchipped === true,
         neutered: neutered === 'true' || neutered === true,
@@ -101,7 +103,7 @@ export const petController = {
       const body = (req.body ?? {}) as Record<string, unknown>;
       const patch: Record<string, unknown> = {};
       for (const key of [
-        'name', 'species', 'breed', 'size', 'coat', 'birth_date',
+        'name', 'species', 'breed', 'size', 'coat', 'coat_color', 'birth_date',
         'behavior', 'conditions',
       ] as const) {
         if (body[key] !== undefined) patch[key] = body[key];
