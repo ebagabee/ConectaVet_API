@@ -11,6 +11,7 @@ export interface CreatePlanDTO {
   focus: string;
   focus_desc: string;
   price: number;
+  free_consultations?: number;
   perks: Perk[];
   is_active?: boolean;
 }
@@ -21,6 +22,7 @@ export interface UpdatePlanDTO {
   focus?: string;
   focus_desc?: string;
   price?: number;
+  free_consultations?: number;
   perks?: Perk[];
   is_active?: boolean;
 }
@@ -59,6 +61,7 @@ export const planService = {
         focus: data.focus,
         focus_desc: data.focus_desc,
         price: data.price,
+        free_consultations: data.free_consultations ?? 0,
         perks: JSON.stringify(data.perks ?? []),
         is_active: data.is_active ?? true,
       })
@@ -76,6 +79,7 @@ export const planService = {
     if (data.focus !== undefined) patch.focus = data.focus;
     if (data.focus_desc !== undefined) patch.focus_desc = data.focus_desc;
     if (data.price !== undefined) patch.price = data.price;
+    if (data.free_consultations !== undefined) patch.free_consultations = data.free_consultations;
     if (data.perks !== undefined) patch.perks = JSON.stringify(data.perks);
     if (data.is_active !== undefined) patch.is_active = data.is_active;
 
