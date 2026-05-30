@@ -11,6 +11,7 @@ interface PlanSeed {
   focus: string;
   focus_desc: string;
   price: number;
+  free_consultations: number;
   perks: Perk[];
 }
 
@@ -22,8 +23,9 @@ const plans: PlanSeed[] = [
     focus_desc:
       'Tutores que buscam cuidado eficiente, orientação confiável e praticidade no dia a dia do seu pet.',
     price: 39.9,
+    free_consultations: 1,
     perks: [
-      { icon: 'i-ph-dog', label: 'Cadastro de até 2 pets (cães e gatos)' },
+      { icon: 'i-ph-dog', label: 'Cadastro de até 5 pets (cães e gatos)' },
       { icon: 'i-ph-stethoscope', label: 'Consulta Virtual Agendada: 1 por mês' },
       {
         icon: 'i-ph-play-circle',
@@ -52,6 +54,7 @@ const plans: PlanSeed[] = [
     focus_desc:
       'Tutores que desejam mais suporte, comodidade e benefícios para cuidar melhor do seu pet.',
     price: 79.9,
+    free_consultations: 2,
     perks: [
       { icon: 'i-ph-exclamation-mark', label: 'Tudo incluso no Essencial' },
       {
@@ -87,6 +90,7 @@ const plans: PlanSeed[] = [
     focus_desc:
       'Tutores que querem o melhor em exclusividade, benefícios e mimos para seu pet.',
     price: 149.9,
+    free_consultations: 4,
     perks: [
       { icon: 'i-ph-exclamation-mark', label: 'Tudo incluso no Essencial e Care Plus' },
       {
@@ -137,6 +141,7 @@ export async function seed(knex: Knex): Promise<void> {
       focus: plan.focus,
       focus_desc: plan.focus_desc,
       price: plan.price,
+      free_consultations: plan.free_consultations,
       perks: JSON.stringify(plan.perks),
       is_active: true,
     });

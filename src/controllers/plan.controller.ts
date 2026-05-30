@@ -42,6 +42,8 @@ export const planController = {
         focus: body.focus ?? '',
         focus_desc: body.focus_desc ?? '',
         price: Number(body.price),
+        free_consultations:
+          body.free_consultations !== undefined ? Number(body.free_consultations) : 0,
         perks: Array.isArray(body.perks) ? body.perks : [],
         is_active: body.is_active,
       });
@@ -58,6 +60,8 @@ export const planController = {
       const plan = await planService.update(req.params['id'] as string, {
         ...body,
         price: body.price !== undefined ? Number(body.price) : undefined,
+        free_consultations:
+          body.free_consultations !== undefined ? Number(body.free_consultations) : undefined,
       });
       res.json(plan);
     } catch (err) {
