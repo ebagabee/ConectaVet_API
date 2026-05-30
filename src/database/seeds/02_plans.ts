@@ -25,7 +25,7 @@ const plans: PlanSeed[] = [
     price: 39.9,
     free_consultations: 1,
     perks: [
-      { icon: 'i-ph-dog', label: 'Cadastro de até 2 pets (cães e gatos)' },
+      { icon: 'i-ph-dog', label: 'Cadastro de até 5 pets (cães e gatos)' },
       { icon: 'i-ph-stethoscope', label: 'Consulta Virtual Agendada: 1 por mês' },
       {
         icon: 'i-ph-play-circle',

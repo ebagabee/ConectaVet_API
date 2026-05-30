@@ -31,12 +31,7 @@ export interface UpdatePetDTO {
   avatar_url?: string | null;
 }
 
-async function userPetLimit(userId: string): Promise<number> {
-  const activeSubscription = await db('subscriptions')
-    .where({ user_id: userId, status: 'active' })
-    .first();
-  return activeSubscription ? 2 : 1;
-}
+const MAX_PETS_PER_USER = 5;
 
 async function countUserPets(userId: string): Promise<number> {
   const [{ count }] = await db('pets').where({ user_id: userId }).count<{ count: string }[]>('id as count');
@@ -48,14 +43,9 @@ export const petService = {
     const owner = await db('users').where({ id: data.user_id }).first();
     if (!owner) throw new Error('Tutor não encontrado.');
 
-    const limit = await userPetLimit(data.user_id);
     const current = await countUserPets(data.user_id);
-    if (current >= limit) {
-      throw new Error(
-        limit === 1
-          ? 'Limite de 1 pet atingido. Assine um plano para cadastrar até 2 pets.'
-          : 'Limite de 2 pets atingido para o plano atual.'
-      );
+    if (current >= MAX_PETS_PER_USER) {
+      throw new Error(`Limite de ${MAX_PETS_PER_USER} pets atingido.`);
     }
 
     const [pet] = await db('pets').insert(data).returning('*');
