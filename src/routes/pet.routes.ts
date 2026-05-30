@@ -5,7 +5,7 @@ import { requireAuth } from '../middlewares/auth.middleware';
 
 const router = Router();
 
-router.post('/', uploadPetAvatar, petController.create);
+router.post('/', requireAuth, uploadPetAvatar, petController.create);
 router.get('/my', requireAuth, petController.findMine);
 router.get('/me', requireAuth, petController.findMine);
 router.get('/user/:userId', petController.findByUser);
